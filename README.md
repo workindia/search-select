@@ -25,7 +25,7 @@ https://cdn.jsdelivr.net/gh/workindia/search-select@1.0.0/search-select.js
 3. NPM
 
 ```sh
-Coming Soon
+npm i search-select-js
 ```
 
 ### Usage
