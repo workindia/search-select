@@ -1,0 +1,49 @@
+<html>
+    <head>
+
+        <style>
+            .container {
+                width: 120px;
+            }
+
+            .input-item {
+                height: 20px !important;
+            }
+        </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/workindia/search-select@1.0.1/search-select.css">
+        <script src="https://cdn.jsdelivr.net/gh/workindia/search-select@1.0.1/search-select.js"></script>
+        <script>
+            window.addEventListener('DOMContentLoaded', function(ev) {
+                const searchSelectDropdown = new SearchSelect('#dropdown-input', {
+                    data: ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10'],
+                    filter: SearchSelect.FILTER_CONTAINS,
+                    sort: undefined,
+                    inputClass: 'input-item form-control',
+                    maxOpenEntries: 9,
+                    searchPosition: 'top',
+                    onInputClickCallback: function(ev) { console.log('Input Clicked') },
+                    onInputKeyDownCallback: function(ev) { console.log('Input Key Down') },
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <input id="dropdown-input"
+                name="dropdown-input"
+                class="Search-Select--Hidden-Input"
+                placeholder="Pick Your Item"
+                data-search-placeholder="Search Your Item"
+                hidden/>
+        </div>
+        
+        <button style="padding: 8px; 
+                       margin-top: 10px;
+                       color: white;
+                       background-color: cadetblue; 
+                       border-radius: 3px;" 
+                onclick="alert(document.getElementById('dropdown-input').value);">
+            Get Value!
+        </button>
+    </body>
+</html>
