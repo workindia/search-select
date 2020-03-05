@@ -82,4 +82,4 @@ document.getElementById('dropdown-input').addEventListner('change', function(ev)
 
 ## License
 
-MIT Licensed. See [LICENSE][1] file for details.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
