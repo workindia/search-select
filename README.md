@@ -2,6 +2,8 @@
 
 SearchSelect: A searchable dropdown library.
 
+![](examples/vdo.gif)
+
 ## Installation and usage
 
 ### Installation
