@@ -1,5 +1,5 @@
 {
-  "name": "search-select",
+  "name": "search-select-js",
   "version": "1.0.0",
   "description": "Search-Select: A searchable dropdown library",
   "main": "search-select.js",
