@@ -11,7 +11,7 @@ Download search-select using below methods.
 1. Git Release
 
 ```sh
-https://github.com/nogoodusername/search-select/releases
+https://github.com/workindia/search-select/releases
 ```
 
 2. NPM

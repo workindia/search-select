@@ -1,9 +1,26 @@
 {
-    "name": "search-select",
-    "version": "1.0.0",
-    "description": "Search-Select: A searchable dropdown library",
-    "main": "search-select.js",
-    "author": "Kshitij Nagvekar",
-    "repository": "https://github.com/nogoodusername/search-select",
-    "homepage": "https://github.com/nogoodusername/search-select"
+  "name": "search-select",
+  "version": "1.0.0",
+  "description": "Search-Select: A searchable dropdown library",
+  "main": "search-select.js",
+  "author": "Kshitij Nagvekar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workindia/search-select.git"
+  },
+  "homepage": "https://github.com/workindia/search-select",
+  "bugs": {
+    "url": "https://github.com/workindia/search-select/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dropdown",
+    "javascript",
+    "light",
+    "lightweight",
+    "search"
+  ],
+  "license": "MIT"
 }
