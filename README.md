@@ -14,7 +14,13 @@ Download search-select using below methods.
 https://github.com/workindia/search-select/releases
 ```
 
-2. NPM
+2. CDN
+
+```sh
+https://cdn.jsdelivr.net/gh/workindia/search-select@1.0.0/search-select.js
+```
+
+3. NPM
 
 ```sh
 Coming Soon
