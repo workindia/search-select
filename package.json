@@ -1,0 +1,9 @@
+{
+    "name": "search-select",
+    "version": "1.0.0",
+    "description": "Search-Select: A searchable dropdown library",
+    "main": "search-select.js",
+    "author": "Kshitij Nagvekar",
+    "repository": "https://github.com/nogoodusername/search-select",
+    "homepage": "https://github.com/nogoodusername/search-select"
+}
