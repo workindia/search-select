@@ -42,8 +42,9 @@
                        color: white;
                        background-color: cadetblue; 
                        border-radius: 3px;" 
-                onclick="alert(document.getElementById('dropdown-input').value);">
+                onclick="document.getElementById('selectedValue').innerHTML = document.getElementById('dropdown-input').value;">
             Get Value!
         </button>
+        <label id="selectedValue"></label>
     </body>
 </html>
