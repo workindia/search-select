@@ -55,7 +55,9 @@
             searchPosition: undefined,
             dropdownPosition: undefined,
             onInputClickCallback: undefined,
-            onInputKeyDownCallback: undefined
+            onInputKeyDownCallback: undefined,
+            hideSeparateSearchInput: true,
+            noMatchText: 'No option matched.',
         };
     
         var constants = {
@@ -69,7 +71,8 @@
             optionsContainer: 'searchSelect--Options',
             inputDisplay: 'searchSelect--Display',
             options: 'searchSelect--Option',
-            searchInput: 'searchSelect--SearchBar'
+            searchInput: 'searchSelect--SearchBar',
+            noMatchField: 'searchSelect--noMatchField',
         };
     
         return function SearchSelectConstructor(hiddenInput, configuration) {
@@ -77,6 +80,7 @@
             var mContainer = undefined;
     
             var input = document.querySelector(hiddenInput);
+            var clonedInput = input.cloneNode();
             var config = configuration;
     
             if (config.sort) {
@@ -95,8 +99,25 @@
                 } else {
                     input.parentNode.insertBefore(_this.container(), input.nextSibling);
                 }
+        
                 input.addEventListener('change', _this.onInputChange);
+                if(config.hideSeparateSearchInput) {
+                    clonedInput.addEventListener('focus', _this.onClonedInputFocus);
+                    clonedInput.addEventListener('keydown', _this.onSearchInputKeyDown);
+                    clonedInput.addEventListener('keyup', _this.onSearchInputChange);
+                    clonedInput.addEventListener('blur', _this.onClonedInputBlur);
+                }
             };
+
+            _this.onClonedInputFocus = function() {
+                _this.toggleDropDown();
+            }
+
+            _this.onClonedInputBlur = function(e) {
+                if(typeof(config.onInputBlurCallback) === "function") {
+                    config.onInputBlurCallback(e);
+                }
+            }
     
             _this.getRandomContainerId = function() {
                 return "searchSelect-" + Math.floor(Math.random() * Math.floor(5000)).toString();
@@ -107,6 +128,7 @@
                 container.className = 'searchSelect';
                 container.id = _this.getRandomContainerId();
     
+                container.appendChild(_this.clonedInput());
                 container.appendChild(_this.inputDisplay());
                 container.appendChild(_this.dropDown());
                 container.appendChild(_this.fillScreenDismiss());
@@ -119,6 +141,28 @@
     
                 return container;
             };
+
+            _this.clonedInput = function() {
+                if(config.hideSeparateSearchInput) {
+                    clonedInput.id = "cloned-input-" + hiddenInput;
+                    clonedInput.hidden = false;    
+                }
+                return clonedInput;
+            }
+
+            _this.noMatchField = function() {
+                var field = document.createElement('div');
+                field.classList.add(classList.noMatchField);
+                field.classList.add(classList.optionsContainer);
+                field.innerHTML = config.noMatchText || 'No option matched.';
+                field.style.display = 'none';
+                field.addEventListener('click', function() {
+                    field.blur();
+                    field.style.display = 'none';
+                    _this.toggleDropDown();
+                })
+                return field;
+            }
     
             _this.inputDisplay = function () {
                 var display = document.createElement('div');
@@ -130,6 +174,9 @@
                     });
                 } else {
                     display.classList.add('searchSelect--Display--disabled')
+                }
+                if (config.hideSeparateSearchInput) {
+                    display.style.display = 'none';
                 }
     
                 var span = document.createElement('span');
@@ -167,6 +214,8 @@
             _this.dropDownContent = function() {
                 var dropdown = document.createElement('div');
                 dropdown.className = 'searchSelect--Dropdown';
+
+                dropdown.appendChild(_this.noMatchField())
     
                 var optionsList = document.createElement('ul');
                 optionsList.className = classList.optionsContainer;
@@ -184,6 +233,10 @@
                     search.classList.add('searchSelect--Search--top');
                 } else {
                     search.classList.add('searchSelect--Search--bottom');
+                }
+
+                if (config.hideSeparateSearchInput) {
+                    search.style.display = 'none';
                 }
     
                 var searchInput = _this.searchInput();
@@ -248,7 +301,9 @@
                 _this.querySelector('.' + classList.fillDismiss).classList.toggle('searchSelect--FillDismiss--hidden');
     
                 if (!_this.querySelector('.' + classList.wrapper). classList.contains('searchSelect--Wrapper--hidden')) {
-                    _this.querySelector('.' + classList.searchInput).focus();
+                    if(!config.hideSeparateSearchInput) {
+                        _this.querySelector('.' + classList.searchInput).focus();
+                    }
                 }
     
                 _this.querySelector('.' + classList.searchInput).value = null;
@@ -270,11 +325,14 @@
                     } else {
                         _this.toggleDropDown();
                     }
+                    clonedInput.blur();
                 } else if (c === 27) {
                     _this.toggleDropDown();
                 } else if (c === 38 || c === 40) {
                     event.preventDefault();
                     _this.navigateOptions(c===38?'previous':'next');
+                } else {
+                    input.value = "";
                 }
     
                 if (config.onInputKeyDownCallback) {
@@ -283,15 +341,34 @@
             };
     
             _this.onSearchInputChange = function(event) {
+
+                var c = event.keyCode;
+                if (c === 38 || c === 40) return; // stop up down for input change
+                
                 var target = event.target;
                 var keyword = target.value;
                 var options = _this.querySelectorAll('.' + classList.options);
+
+                var visibleOptionsCount = 0;
     
                 for (var i = 0; i < options.length; i++) {
                     if (config.filter(options[i].innerHTML, keyword)) {
                         options[i].classList.remove('searchSelect--Option--hidden');
+                        visibleOptionsCount++;
                     } else {
                         options[i].classList.add('searchSelect--Option--hidden');
+                    }
+                }
+
+                var noMatchField = _this.querySelectorAll('.' + classList.noMatchField);
+                var wrapper = _this.querySelector('.' + classList.wrapper);
+                if(noMatchField && noMatchField.length > 0) {
+                    if(visibleOptionsCount == 0) {
+                        noMatchField[0].style.display = 'block';
+                        // wrapper.classList.add('searchSelect--Wrapper--hidden');
+                    } else {
+                        noMatchField[0].style.display = 'none';
+                        // wrapper.classList.remove('searchSelect--Wrapper--hidden');
                     }
                 }
             };
@@ -328,9 +405,13 @@
                 for (var i=0; i < dataArray.length; i++) {
                     var option = document.createElement('li');
                     option.className = classList.options + ' noSelect';
+
+                    var subtext = document.createElement('span');
+                    subtext.classList.add('searchSelect--Option-subtext');
     
                     if (typeof dataArray[i] === 'string' || dataArray[i] instanceof String) {
                         option.setAttribute('data-value', dataArray[i]);
+                        option.setAttribute('data-label', dataArray[i]);
                         option.setAttribute('data-input', input.id);
                         option.innerHTML = dataArray[i];
     
@@ -340,11 +421,18 @@
                         options.push(option);
                     } else if (typeof dataArray[i] === 'object' || dataArray[i] instanceof Object) {
                         option.setAttribute('data-value', dataArray[i].value);
+                        option.setAttribute('data-label', dataArray[i].label);
                         option.setAttribute('data-input', input.id);
                         option.innerHTML = dataArray[i].label;
     
                         option.addEventListener('click', _this.optionClick);
                         option.addEventListener('mouseover', _this.resetOptionSelect);
+
+                        if(dataArray[i].subtext) {
+                            subtext.innerHTML = dataArray[i].subtext;
+                        }
+
+                        option.insertAdjacentElement('beforeend', subtext);
     
                         options.push(option);
                     }
@@ -366,9 +454,10 @@
                 _this.scrollParentToChild(option.parentNode, option);
     
                 var _value = option.getAttribute('data-value');
-                var _label = option.innerHTML;
-    
+                var _label = option.getAttribute('data-label');
+           
                 input.value = _value;
+                clonedInput.value = _label;
                 input.dispatchEvent(_this.createEvent('change'));
                 _this.querySelector('.' + classList.inputResult).innerHTML = _label;
             };
@@ -398,6 +487,14 @@
             _this.getData = function () {
                 return config.data;
             };
+
+            _this.setClonedInput = function(value, placeholder="") {
+                clonedInput.value = value;
+                if (placeholder) {
+                    clonedInput.placeholder = placeholder;
+                }
+
+            }
     
             _this.getContainer = function () {
                 return mContainer;
@@ -408,7 +505,7 @@
             };
     
             _this.openDropdown = function (focus) {
-                if (focus) {
+                if (focus && !config.hideSeparateSearchInput) {
                     _this.querySelector('.' + classList.searchInput).focus();
                 }
     
