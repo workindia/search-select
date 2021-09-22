@@ -495,6 +495,23 @@
                 return config.data;
             };
 
+            _this.setValue = function(val) {
+                var _option = _this.getOptionFromValue(val);
+                if(_option) {
+                    _this.selectOption(_option);
+                    return true;
+                }
+                return false;
+            }
+
+            _this.getOptionFromValue = function(val) {
+                var _options = _this.querySelectorAll('.' + classList.options)
+                for (var i=0; i<_options.length; ++i) {
+                    if(val === _options[i].getAttribute('data-value'))
+                        return _options[i];
+                }
+            }
+
             _this.setClonedInput = function(value, placeholder="") {
                 clonedInput.value = value;
                 if (placeholder) {
