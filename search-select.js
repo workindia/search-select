@@ -44,6 +44,12 @@
          * `onInputClickCallback` - Event called when search-select input is clicked
          * 
          * `onInputKeyDownCallback` - Event called when a key is pressed in search bar
+         * 
+         * `onInputBlurCallback` - Callback to run when input box is out of focus
+         * 
+         * `hideSeparateSearchInput` - Hide the separate input search and use the same input
+         * 
+         * `noMatchText` - Text (HTML) to be shown if none of the options match
          */
 
         var _config = {
@@ -56,6 +62,7 @@
             dropdownPosition: undefined,
             onInputClickCallback: undefined,
             onInputKeyDownCallback: undefined,
+            onInputBlurCallback: undefined,
             hideSeparateSearchInput: true,
             noMatchText: 'No option matched.',
         };
