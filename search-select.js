@@ -50,6 +50,8 @@
          * `hideSeparateSearchInput` - Hide the separate input search and use the same input
          * 
          * `noMatchText` - Text (HTML) to be shown if none of the options match
+         * 
+         * `onErrorClass`: - Error class to be set on  input field has error
          */
 
         var _config = {
@@ -65,6 +67,7 @@
             onInputBlurCallback: undefined,
             hideSeparateSearchInput: true,
             noMatchText: 'No option matched.',
+            onErrorClass: 'error',
         };
     
         var constants = {
@@ -80,6 +83,7 @@
             options: 'searchSelect--Option',
             searchInput: 'searchSelect--SearchBar',
             noMatchField: 'searchSelect--noMatchField',
+            errorField: 'error',
         };
     
         return function SearchSelectConstructor(hiddenInput, configuration) {
@@ -89,6 +93,8 @@
             var input = document.querySelector(hiddenInput);
             var clonedInput = input.cloneNode();
             var config = configuration;
+
+            classList.errorField = config.onErrorClass || classList.errorField;
     
             if (config.sort) {
                 if (config.data && config.data.length > 0) {
@@ -467,6 +473,7 @@
                 clonedInput.value = _label;
                 input.dispatchEvent(_this.createEvent('change'));
                 _this.querySelector('.' + classList.inputResult).innerHTML = _label;
+                _this.clearError();
             };
     
             _this.resetOptionSelect = function() {
@@ -518,6 +525,14 @@
                     clonedInput.placeholder = placeholder;
                 }
 
+            }
+    
+            _this.setError = function() {
+                clonedInput.classList.add(classList.errorField);
+            }
+
+            _this.clearError = function() {
+                clonedInput.classList.remove(classList.errorField);
             }
     
             _this.getContainer = function () {
