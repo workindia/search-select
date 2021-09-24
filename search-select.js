@@ -115,6 +115,9 @@
         
                 input.addEventListener('change', _this.onInputChange);
                 if(config.hideSeparateSearchInput) {
+                    input.addEventListener('focus', function() {
+                        clonedInput.focus();
+                    });
                     clonedInput.addEventListener('focus', _this.onClonedInputFocus);
                     clonedInput.addEventListener('keydown', _this.onSearchInputKeyDown);
                     clonedInput.addEventListener('keyup', _this.onSearchInputChange);
@@ -127,7 +130,6 @@
             }
 
             _this.onClonedInputBlur = function(e) {
-                _this.closeDropdown();
                 if(typeof(config.onInputBlurCallback) === "function") {
                     config.onInputBlurCallback(e);
                 }
