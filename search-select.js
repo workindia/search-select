@@ -526,6 +526,10 @@
                 }
 
             }
+
+            _this.focusClonedInput = function() {
+                clonedInput.focus();
+            }
     
             _this.setError = function() {
                 clonedInput.classList.add(classList.errorField);
