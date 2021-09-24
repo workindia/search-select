@@ -123,10 +123,11 @@
             };
 
             _this.onClonedInputFocus = function() {
-                _this.toggleDropDown();
+                _this.openDropdown();
             }
 
             _this.onClonedInputBlur = function(e) {
+                _this.closeDropdown();
                 if(typeof(config.onInputBlurCallback) === "function") {
                     config.onInputBlurCallback(e);
                 }
@@ -344,6 +345,8 @@
                 } else if (c === 38 || c === 40) {
                     event.preventDefault();
                     _this.navigateOptions(c===38?'previous':'next');
+                } else if (c === 9) {
+                    clonedInput.blur();
                 } else {
                     input.value = "";
                 }
