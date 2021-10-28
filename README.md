@@ -2,7 +2,16 @@
 
 SearchSelect: A searchable dropdown library.
 
+### Previews
+
+[Example for v1](examples/example.html)
+
 ![](examples/vdo.gif)
+
+[Example for v2](examples/example.v2.html)
+
+![](examples/vdo.v2.gif)
+
 
 ## Installation and usage
 
@@ -69,8 +78,8 @@ const selectedValue = document.getElementById('dropdown-input').value;
 document.getElementById('dropdown-input').addEventListner('change', function(ev) { console.log('Value changed'); })
 ```
 
-
-## Configuration Parameters
+## Documentation
+### Configuration Parameters
 - `data` - Input data for dropdown
 - `filter` - Filter criteria for dropdown search
 - `sort` - Sort criteria for dropdown items
@@ -81,11 +90,28 @@ document.getElementById('dropdown-input').addEventListner('change', function(ev)
 - `onInputClickCallback` - Event called when search-select input is clicked
 - `onInputKeyDownCallback` - Event called when a key is pressed in search bar
 
+Parameters added v2 onwards
+- `hideSeparateSearchInput` - If true, given input field will be used as search box as well as showing value
+- `onInputBlurCallback` - Callback function runs when input box is out of focus
+- `noMatchText` - Text (HTML) to be shown if none of the options match
+- `onErrorClass`: - Error class to be set on  input field has error
 
-## Methods
+### Methods
 - `openDropdown(focus)` - Open dropdown. Pass `focus=true` if to set focus on search bar
 - `closeDropdown()` - Close dropdown.
 - `setData(data)` - Set dropdown list data.
+
+Methods added v2 onwards
+- `setValue(val)` - Set the value of search-select. The value must be present in the data. Returns true if set correctly, false otherwise.
+- `setClonedInput(val, placeholder)` - Set the display value and placeholder of visible input.
+- `focusClonedInput()` - Focus on visible on input
+- `setError()` - Set error class to input
+- `clearError()` - Clear error class from input
+
+
+# Contributing
+Feel like contributing? That's awesome! We have a [contributing guide](CONTRIBUTING.md) to help you.
+
 
 
 ## License

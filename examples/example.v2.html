@@ -1,0 +1,91 @@
+<html>
+    <head>
+
+        <style>
+            :root {
+                font-family: sans-serif;
+            }
+
+            .container {
+                width: 120px;
+            }
+            
+            .btn {
+                padding: 8px; 
+                margin-top: 10px;
+                color: white;
+                background-color: #4154AF; 
+                border-radius: 3px;
+            }
+
+            .Search-Select--Hidden-Input {
+                height: 30px !important;
+                width: 240px;
+                padding: 10px;
+                border-radius: 3px;
+                border: 1px solid #4154AF;
+            }
+
+            .searchSelect--Option-subtext {
+                float: right;
+                font-size: 0.8rem;
+            }
+
+            .form-control--has-error {
+                border: 1px solid #FF5576;
+            }
+        </style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/workindia/search-select@2.0.2/search-select.css">
+        <script src="https://cdn.jsdelivr.net/gh/workindia/search-select@2.0.2/search-select.js"></script>
+        <script>
+            window.addEventListener('DOMContentLoaded', function(ev) {
+                window.searchSelectDropdown = new SearchSelect('#dropdown-input', {
+                    data: [
+                        {value: 'apple', label: 'Apple', subtext: '$0.4'},
+                        {value: 'ball', label: 'Ball', subtext: '$0.1'},
+                        {value: 'custard_apple', label: 'Custard Apple', subtext: '$0.5'},
+                        {value: 'dogeball', label: 'Dodgeball', subtext: '$10'},
+                        {value: 'icecream', label: 'Icecream', subtext: '$2'},
+                        {value: 'pineapple', label: 'Pineapple', subtext: '$1'},
+                    ],
+                    filter: SearchSelect.FILTER_CONTAINS,
+                    sort: undefined,
+                    inputClass: 'input-item form-control',
+                    maxOpenEntries: 5,
+                    searchPosition: 'top',
+                    hideSeparateSearchInput: true,
+                    onInputClickCallback: function(ev) { console.log('Input Clicked') },
+                    onInputKeyDownCallback: function(ev) { console.log('Input Key Down') },
+                    onErrorClass: 'form-control--has-error',
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <input id="dropdown-input"
+                name="dropdown-input"
+                class="Search-Select--Hidden-Input"
+                placeholder="Pick Your Item"
+                data-search-placeholder="Search Your Item"
+                hidden/>
+        </div>
+        
+        <button class="btn"
+                onclick="document.getElementById('selectedValue').innerHTML = document.getElementById('dropdown-input').value;">
+            Get Value!
+        </button>
+        <button class="btn"
+                onclick="searchSelectDropdown.setError()">
+            Set Error
+        </button>
+        <button class="btn"
+                onclick="searchSelectDropdown.clearError()">
+            Clear Error
+        </button>
+        <div style="margin-top: 10px;">
+            <label id="selectedValue"></label>
+        </div>
+    </body>
+</html>

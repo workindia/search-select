@@ -115,6 +115,9 @@
         
                 input.addEventListener('change', _this.onInputChange);
                 if(config.hideSeparateSearchInput) {
+                    input.addEventListener('focus', function() {
+                        clonedInput.focus();
+                    });
                     clonedInput.addEventListener('focus', _this.onClonedInputFocus);
                     clonedInput.addEventListener('keydown', _this.onSearchInputKeyDown);
                     clonedInput.addEventListener('keyup', _this.onSearchInputChange);
@@ -123,7 +126,7 @@
             };
 
             _this.onClonedInputFocus = function() {
-                _this.toggleDropDown();
+                _this.openDropdown();
             }
 
             _this.onClonedInputBlur = function(e) {
@@ -344,6 +347,8 @@
                 } else if (c === 38 || c === 40) {
                     event.preventDefault();
                     _this.navigateOptions(c===38?'previous':'next');
+                } else if (c === 9) {
+                    clonedInput.blur();
                 } else {
                     input.value = "";
                 }
@@ -525,6 +530,10 @@
                     clonedInput.placeholder = placeholder;
                 }
 
+            }
+
+            _this.focusClonedInput = function() {
+                clonedInput.focus();
             }
     
             _this.setError = function() {
